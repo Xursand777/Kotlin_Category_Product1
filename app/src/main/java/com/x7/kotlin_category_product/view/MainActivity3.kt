@@ -1,13 +1,17 @@
 package com.x7.kotlin_category_product.view
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.x7.kotlin_category_product.databinding.ActivityMain3Binding
+import com.x7.kotlin_category_product.view.adapters.SelectAdapter
 import com.x7.kotlin_category_product.viewmodel.ProductViewModel
 
 class MainActivity3 : AppCompatActivity() {
@@ -16,6 +20,8 @@ class MainActivity3 : AppCompatActivity() {
     var categoryimage:String?=null
     var imageuri:Uri?=null
     lateinit var productViewModel: ProductViewModel
+    var arraylistimage = ArrayList<Uri>()
+    lateinit var selectAdapter:SelectAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMain3Binding.inflate(layoutInflater)
@@ -39,7 +45,8 @@ class MainActivity3 : AppCompatActivity() {
                      edittexproductname.text.toString(),
                      imageuri!!,
                      edittexprice.text.toString(),
-                     edittexDescription.text.toString()
+                     edittexDescription.text.toString(),
+                     arraylistimage
                  )
             }
             //Horizontalprogressbar
@@ -48,6 +55,8 @@ class MainActivity3 : AppCompatActivity() {
                     showprogress()
                 }else{
                     hideprogress()
+                   // finish()
+                  //  startActivity(Intent(this@MainActivity3,MainActivity::class.java))
                 }
             })
                //progress foiz %
@@ -71,7 +80,12 @@ class MainActivity3 : AppCompatActivity() {
         binding.imageviewopengallery2.setImageURI(uri)
         if (uri != null) {
             imageuri = uri
+            arraylistimage.add(uri)
             binding.buttonaddproduct.isEnabled=true
+            binding.recyclerviewselectimages.layoutManager=LinearLayoutManager(this@MainActivity3,RecyclerView.HORIZONTAL,false)
+            selectAdapter=SelectAdapter(this@MainActivity3,arraylistimage)
+            binding.recyclerviewselectimages.adapter=selectAdapter
+
         }
     }
 

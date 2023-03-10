@@ -1,5 +1,6 @@
 package com.x7.kotlin_category_product.view
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -48,6 +49,7 @@ class MainActivity2 : AppCompatActivity() {
                 showprogressbar()
             }else{
                 hideprogressbar()
+                startActivity(Intent(this@MainActivity2,MainActivity::class.java))
             }
         })
         categoryViewModel.uploadprogress().observe(this@MainActivity2,{

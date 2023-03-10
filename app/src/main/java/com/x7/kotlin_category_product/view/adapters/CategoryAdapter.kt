@@ -1,4 +1,4 @@
-package com.x7.kotlin_category_product.view
+package com.x7.kotlin_category_product.view.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -8,13 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.x7.kotlin_category_product.databinding.RecyclerviewItemBinding
 import com.x7.kotlin_category_product.model.CategoryModel
+import com.x7.kotlin_category_product.model.ProductModel
+import com.x7.kotlin_category_product.view.MainActivity
+import com.x7.kotlin_category_product.view.MainActivity3
 
 class CategoryAdapter constructor(
     val context: Context,
-    val arrayList: ArrayList<CategoryModel>
+    var arrayList: ArrayList<CategoryModel>
 ): RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    val mainActivity:MainActivity=context as MainActivity
+    val mainActivity: MainActivity =context as MainActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view= RecyclerviewItemBinding.inflate(LayoutInflater.from(context),parent,false)
@@ -27,11 +30,14 @@ class CategoryAdapter constructor(
             //Glide
             Glide.with(context).load(arrayList.get(position).imageurl).centerCrop().into(imageviewcategory)
             //Glide
+
             linearlay1.setOnLongClickListener {
-                val intent=Intent(context,MainActivity3::class.java)
+                val intent=Intent(context, MainActivity3::class.java)
                 intent.putExtra("name",arrayList.get(position).name)
                 intent.putExtra("image",arrayList.get(position).imageurl)
-                context.startActivity(intent)
+                if (mainActivity.admin){
+                    context.startActivity(intent)
+                }
                 return@setOnLongClickListener true
             }
             linearlay1.setOnClickListener {
@@ -41,6 +47,10 @@ class CategoryAdapter constructor(
     }
 
     override fun getItemCount(): Int =arrayList.size
+    fun filterList(filteredList: ArrayList<CategoryModel>) {
+        arrayList = filteredList
+        notifyDataSetChanged()
+    }
 
     class CategoryViewHolder(val binding: RecyclerviewItemBinding):RecyclerView.ViewHolder(binding.root)
 
